@@ -1,14 +1,5 @@
-### What is This?
-UDP proxy server library with Worker-Thread  
-Worker-Thread opens server and dupplicates message to Main Thread  
-So..  It cannot modifies data but Asynchronous!  
-It ONLY supports IPv4  
-It will keeps same port during 10secs  
 
-```ts
-// TypeScript
-
-import udpproxy = require('kr-udp-proxy');
+import udpproxy = require('..');
 
 class Client implements udpproxy.Client
 {
@@ -42,5 +33,3 @@ udpproxy.open(Client, {
     toPort: 19132,
     // keepPortTimeout: 10000, // default
 });
-
-```

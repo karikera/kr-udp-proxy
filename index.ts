@@ -7,7 +7,6 @@ export const Origin = common.Origin;
 
 export interface Client
 {
-    constructor(address:string, port:number):void;
     message(origin:Origin, msg:Buffer):void;
     finallize():void;
 }

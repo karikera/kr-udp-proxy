@@ -1,5 +1,6 @@
 /.vscode
 /.gitignore
+/example
 /tsconfig.json
 *.js.map
 *.ts
