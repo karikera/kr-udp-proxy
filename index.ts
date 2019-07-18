@@ -1,5 +1,6 @@
 
 import { Worker } from 'worker_threads';
+import path = require('path');
 import common = require('./common');
 
 export type Origin = common.Origin;
@@ -16,7 +17,7 @@ export function bind(
     opts:common.Options):void
 {
     const receiveClients:(Client|undefined)[] = [];
-    const receiver = new Worker('./worker.js', {
+    const receiver = new Worker(path.resolve(__dirname,'worker.js'), {
         workerData:opts
     });
     receiver.on('message', (buffer:Uint8Array)=>{
