@@ -36,7 +36,7 @@ class Client implements udpproxy.Client
     }
 }
 
-udpproxy.open(Client, {
+udpproxy.bind(Client, {
     fromPort: 19134, 
     toAddress: '127.0.0.1', 
     toPort: 19132,

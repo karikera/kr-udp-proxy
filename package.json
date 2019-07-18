@@ -1,6 +1,6 @@
 {
   "name": "kr-udp-proxy",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Async UDP Proxy",
   "main": "index.js",
   "dependencies": {},
