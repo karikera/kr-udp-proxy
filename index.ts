@@ -9,7 +9,6 @@ export interface Client
 {
     new(address:string, port:number):Client;
     message(origin:Origin, msg:Buffer):void;
-    close():void;
     finallize():void;
 }
 
@@ -36,7 +35,7 @@ export function bind(
         }
         if (message.length <= 4)
         {
-            client.close();
+            client.finallize();
             receiveClients[clientId] = undefined;
             return;
         }

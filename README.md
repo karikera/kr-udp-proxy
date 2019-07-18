@@ -30,6 +30,10 @@ class Client implements udpproxy.Client
             break;
         }
     }
+
+    finallize()
+    {
+    }
 }
 
 udpproxy.open(Client, {
