@@ -52,6 +52,7 @@ function getClientId(address:string, port:number):number
         console.log(name+ ' closed');
         clients[clientId] = <any>undefined;
         empties.push(clientId);
+        idmap.delete(name);
         client.removeListener('message', message);
         client.close();
 
