@@ -1,46 +1,22 @@
 
-import { Worker } from 'worker_threads';
-import path = require('path');
-import common = require('./common');
+import common = require("./common");
+import async = require("./async");
+import sync = require("./sync");
 
-export type Origin = common.Origin;
-export const Origin = common.Origin;
-
-export interface Client
+export type Client = sync.Client;
+export interface Options extends common.Options
 {
-    message(origin:Origin, msg:Buffer):void;
-    finallize():void;
+    sync?:boolean;
 }
+export const Origin = common.Origin;
+export type Origin = common.Origin;
+
 
 export function bind(
-    newClient:{new(address:string, port:number):Client},
-    opts:common.Options):void
+    newClient:()=>sync.Client,
+    opts:Options):void
 {
-    const receiveClients:(Client|undefined)[] = [];
-    const receiver = new Worker(path.resolve(__dirname,'worker.js'), {
-        workerData:opts
-    });
-    receiver.on('message', (buffer:Uint8Array)=>{
-        const message = Buffer.from(buffer.buffer, buffer.byteOffset, buffer.byteLength);
-        const first = message.readInt32LE(0);
-        const clientId = first & 0x7fffffff;
-        let client = receiveClients[clientId];
-        if (!client)
-        {
-            const address = `${message[4]}.${message[5]}.${message[6]}.${message[7]}`;
-            const port = message.readUInt16LE(8);
-            client = new newClient(address, port);
-            receiveClients[clientId] = client;
-            return;
-        }
-        if (message.length <= 4)
-        {
-            client.finallize();
-            receiveClients[clientId] = undefined;
-            return;
-        }
-
-        const origin:Origin = (first >>> 31);
-        client.message(origin, message.subarray(4));
-    });
+    const target = opts.sync ? sync : async;
+    delete opts.sync;
+    target.bind(newClient, opts);
 }

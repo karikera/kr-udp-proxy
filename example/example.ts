@@ -3,13 +3,15 @@ import udpproxy = require('..');
 
 class Client implements udpproxy.Client
 {
-    constructor(
-        readonly address:string, 
-        readonly port:number)
+    clientId:number; // undefined in constructor
+    address:string; // undefined in constructor
+    port:number; // undefined in constructor
+
+    connected()
     {
     }
 
-    message(origin, msg)
+    message(origin:udpproxy.Origin, msg:Buffer)
     {
         switch (origin)
         {
@@ -22,14 +24,17 @@ class Client implements udpproxy.Client
         }
     }
 
-    finallize()
+    disconnected()
     {
     }
 }
 
-udpproxy.bind(Client, {
+udpproxy.bind(()=>new Client, {
+    // fromAddress: '0.0.0.0', 
     fromPort: 19134, 
     toAddress: '127.0.0.1', 
     toPort: 19132,
-    // keepPortTimeout: 10000, // default
+    // keepPortTimeout: 10000,
+    // sync: false,
+    // onError: err=>{ console.error(err); }
 });
