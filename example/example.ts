@@ -13,6 +13,12 @@ class Client implements udpproxy.Client
 
     message(origin:udpproxy.Origin, msg:Buffer)
     {
+        /*
+        // if sync option is true
+        return null; // remove packet
+        return Buffer.alloc(1); // modify packet
+        */
+    
         switch (origin)
         {
         case udpproxy.Origin.Server:
@@ -23,6 +29,15 @@ class Client implements udpproxy.Client
             break;
         }
     }
+
+    /*
+    // if sync option is true
+    message(origin:udpproxy.Origin, msg:Buffer):Buffer|null
+    {
+        if (msg[0] === 0xfe) return null; // cancel packet sending
+        return msg;
+    }
+    */
 
     disconnected()
     {

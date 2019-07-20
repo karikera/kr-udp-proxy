@@ -3,7 +3,7 @@ import common = require("./common");
 import async = require("./async");
 import sync = require("./sync");
 
-export type Client = sync.Client;
+export type Client = common.Client;
 export interface Options extends common.Options
 {
     sync?:boolean;

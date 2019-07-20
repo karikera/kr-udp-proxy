@@ -3,10 +3,7 @@ import dgram = require('dgram');
 import common = require('./common');
 
 
-export interface Client extends common.Client
-{
-    socket?:dgram.Socket;
-}
+export type Client = common.Client;
 export type Options = common.Options;
 export const Origin = common.Origin;
 export type Origin = common.Origin;
@@ -73,7 +70,18 @@ export function bind(newClient:()=>Client, opts:Options):void
         const client = getClient(remote.address, remote.port);
         if (msg.byteLength !== 0)
         {
-            client.message(Origin.Client, msg);
+            const nmsg = client.message(Origin.Client, msg);
+            if (nmsg === null)
+            {
+                return;
+            }
+            else if (nmsg === undefined)
+            {
+            }
+            else
+            {
+                msg = nmsg;
+            }
         }
         client.socket!.send(msg, opts.toPort, opts.toAddress, err=>{
             if (err) console.error(err);
